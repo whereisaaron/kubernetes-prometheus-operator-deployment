@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prometheus-operator
+  namespace: prometheus
+  labels:
+    operator: prometheus
+    app: prometheus
+    env: live
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        operator: prometheus
+        app: prometheus
+        env: live
+    spec:
+      serviceAccountName: prometheus-operator
+      containers:
+      - name: prometheus-operator
+        image: quay.io/coreos/prometheus-operator:rbac
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 100Mi

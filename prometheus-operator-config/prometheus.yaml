@@ -1,0 +1,25 @@
+apiVersion: "monitoring.coreos.com/v1alpha1"
+kind: "Prometheus"
+metadata:
+  name: main
+  namespace: prometheus
+  labels:
+    prometheus: main
+    app: prometheus
+    env: live
+spec:
+  replicas: 1
+  version: v1.5.2
+  retention: 24h
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchExpressions:
+    - {key: app, operator: In, values: [node-exporter, kube-state-metrics]}
+#  alerting:
+#    alertmanagers:
+#    - namespace: default
+#      name: alertmanager
+#      port: web
+  resources:
+    requests:
+      memory: 400Mi
