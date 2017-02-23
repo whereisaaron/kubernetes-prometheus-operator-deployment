@@ -22,10 +22,10 @@ kubectl delete --ignore-not-found -f kube-state-metrics
 #kubectl delete --ignore-not-found -f prometheus-namespace.yaml
 echo "Not deleting namespace"
 
-# Delete services
+# Delete services created by prometheus-operator
 kubectl delete --ignore-not-found --namespace=prometheus service prometheus-operated alertmanager-operated
 
-# Delete the third party resources
+# Delete the third party resources created by prometheus-operator
 kubectl delete --ignore-not-found thirdpartyresource \
   prometheus.monitoring.coreos.com \
   service-monitor.monitoring.coreos.com \
