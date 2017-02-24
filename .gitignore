@@ -1,2 +1,4 @@
+# Backup files
 *~
+# Local deployment environment variables
 *.env

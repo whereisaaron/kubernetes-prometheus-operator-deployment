@@ -1,0 +1,2 @@
+# Ignore the real .yaml files since they are local to you and may contain passwords 
+*.yaml

@@ -1,0 +1,17 @@
+apiVersion: "monitoring.coreos.com/v1alpha1"
+kind: "Alertmanager"
+metadata:
+  name: main
+  namespace: prometheus
+  labels:
+    alertmanager: main
+    app: alertmanager
+    env: live
+spec:
+  externalUrl: "https://${DEPLOY_ALERTMANAGER_DOMAIN}"
+  replicas: 1
+  version: v0.5.1
+  storage:
+    resources:
+      requests:
+        storage: 10Gi

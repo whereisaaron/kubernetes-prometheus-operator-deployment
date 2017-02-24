@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: alertmanager
+  namespace: prometheus
+  labels:
+    prometheus: main
+    app: prometheus
+    env: live
+    # Automatically create Let's Encrypt ACME certificate 
+    # Uses https://github.com/whereisaaron/kube-cert-manager
+    ${DEPLOY_KCM_LABEL}: ${DEPLOY_ACME_CLASS}
+  annotations:
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: ${DEPLOY_BASIC_AUTH_SECRET_NAME}
+    ingress.kubernetes.io/auth-realm: "Authentication Required"
+spec:
+  tls:
+  - hosts:
+    - ${DEPLOY_ALERTMANAGER_DOMAIN}
+    secretName: ${DEPLOY_ALERTMANAGER_DOMAIN}
+  rules:
+  - host: ${DEPLOY_ALERTMANAGER_DOMAIN}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: alertmanager-main
+          servicePort: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-main
+  namespace: prometheus
+  labels:
+    alertmanager: main
+    app: alermanager
+    env: live
+spec:
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 9093
+    protocol: TCP
+    targetPort: web
+  selector:
+    alertmanager: main

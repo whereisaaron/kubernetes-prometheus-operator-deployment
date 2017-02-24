@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: prometheus
+  labels:
+    prometheus: main
+    app: prometheus
+    env: live
+    # Automatically create Let's Encrypt ACME certificate 
+    # Uses https://github.com/whereisaaron/kube-cert-manager
+    ${DEPLOY_KCM_LABEL}: ${DEPLOY_ACME_CLASS}
+  annotations:
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: ${DEPLOY_BASIC_AUTH_SECRET_NAME}
+    ingress.kubernetes.io/auth-realm: "Authentication Required"
+spec:
+  tls:
+  - hosts:
+    - ${DEPLOY_PROMETHEUS_DOMAIN}
+    secretName: ${DEPLOY_PROMETHEUS_DOMAIN}
+  rules:
+  - host: ${DEPLOY_PROMETHEUS_DOMAIN}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus-main
+          servicePort: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-main
+  namespace: prometheus
+  labels:
+    prometheus: main
+    app: prometheus
+    env: live
+spec:
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 9090
+    protocol: TCP
+    targetPort: web
+  selector:
+    prometheus: main

@@ -2,19 +2,40 @@
 
 #
 # Delete prometheus operator, prometheus, and exporters
-# Does not delete namespace or thirdpartyresources
+# Does not delete namespace, thirdpartyresources, or persistent volumes
+# Deletes CNAMESs only if DEPLOY_AWS_ROUTE53_PROFILE defined, or else comment out below
 #
 
-# Prometheus Operator configuration for Prometheus with ServiceMonitors
-kubectl delete --ignore-not-found -f prometheus-operator-config
+: ${DEPLOY_PROMETHEUS_DOMAIN?"Must define DEPLOY_PROMETHEUS_DOMAIN"}
+: ${DEPLOY_ALERTMANAGER_DOMAIN?"Must define DEPLOY_ALERTMANAGER_DOMAIN"}
+: ${DEPLOY_BASIC_AUTH_SECRET_NAME?"Must define DEPLOY_BASIC_AUTH_SECRET_NAME"}
+: ${DEPLOY_AWS_ROUTE53_PROFILE?"Must define DEPLOY_AWS_ROUTE53_PROFILE"}
+: ${DEPLOY_INGRESS_DOMAIN?"Must define DEPLOY_AWS_ROUTE53_PROFILE"}
+: ${DEPLOY_ACME_CLASS?"Must define DEPLOY_ACME_CLASS for kube-cert-manager"}
+DEPLOY_KCM_LABEL=${DEPLOY_KCM_LABEL:=stable.k8s.psg.io/kcm.class}
+
+# Delete DNS records for Prometheus and Alertmanager
+if [[ -n "${DEPLOY_AWS_ROUTE53_PROFILE}" ]]; then
+  ./create-cname-dns-record.sh --domain=${DEPLOY_PROMETHEUS_DOMAIN} --delete --profile=${DEPLOY_AWS_ROUTE53_PROFILE}
+  ./create-cname-dns-record.sh --domain=${DEPLOY_ALERTMANAGER_DOMAIN} --delete --profile=${DEPLOY_AWS_ROUTE53_PROFILE}
+else
+  echo "No AWS Route53 profiles configured, not deleting domain names"
+fi
+
+# Delete Prometheus Operator configuration for Prometheus and ServiceMonitors
+for file in prometheus-operator-config/*.yaml; do
+  envsubst < $file | kubectl delete --ignore-not-found -f -
+done
 echo "Giving Prometheus Operator 20s to clean up..."
 sleep 20
 
-# Prometheus Operator and Service Account for Prometheus instances
-kubectl delete --ignore-not-found -f prometheus-operator
+# Delete Prometheus Operator, Ingress and Service Account for Prometheus
+for file in prometheus-alerts/*.yaml prometheus-ingress/*.yaml; do
+  envsubst < $file | kubectl delete --ignore-not-found -f -
+done
 kubectl delete --ignore-not-found -f prometheus-service-account
 
-# Prometheus Exporters
+# Delete Prometheus Exporters
 kubectl delete --ignore-not-found -f node-exporter
 kubectl delete --ignore-not-found -f kube-state-metrics
 

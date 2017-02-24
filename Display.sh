@@ -2,7 +2,7 @@
 
 echo "---- Prometheus namespace ----"
 echo ""
-kubectl get svc,deployment,daemonset,statefulset,pod,sa,cm --namespace=prometheus
+kubectl get ing,svc,deployment,daemonset,statefulset,pod,sa,cm,secrets,pvc --namespace=prometheus
 
 echo""
 echo "---- Prometheus Operator configuration ----"

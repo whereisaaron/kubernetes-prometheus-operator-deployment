@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-main
+  namespace: prometheus
+  labels:
+    alertmanager: main
+    app: alertmanager
+    env: live
+data:
+  # https://prometheus.io/docs/alerting/configuration/
+  alertmanager.yaml: |-
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: [ "job" ]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: all
+    receivers:
+    - name: all
+      email_configs:
+      - to: "you@example.com"
+        from: "foo@example.com"
+        smarthost: "smtp.example.com:587"
+        require_tls: true
+        auth_username: "send-user"
+        auth_password: "your-password"
+        send_resolved: true
+      slack_configs:
+      - api_url: "https://hooks.slack.com/services/..."
+        channel: "#general"
+        username: "Prometheus"
+        icon_url: "https://pbs.twimg.com/profile_images/588945677599780865/mrhc1gSh.png"
+        send_resolved: true
