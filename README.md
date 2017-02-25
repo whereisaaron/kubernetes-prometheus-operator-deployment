@@ -8,8 +8,9 @@ for metrics from the Linux OS on each node.
 
 This deployment is somewhat opinionated, but can be easily adapted.
 - All resources are deployed in a 'prometheus' namespace
-- Expects you will use a Kubernetes Ingress controller and basic authentication
-- Creates domain names in AWS Route53 (or you can do this manually)
+- Expects you use a Kubernetes Ingress controller and basic authentication
+- Expects you use [kube-cert-manager](https://github.com/whereisaaron/kube-cert-manager) to automatically issue Let's Encrypt SSL certificates (or you can do this manually)
+- Expects to create domain names in AWS Route53 (or you can do this manually)
 
 ## Scripts
 
@@ -56,7 +57,7 @@ Before using the `Deploy.sh` script you should:
 
 ## Sample deployment
 
-After running `./Deploy.sh`, `./Display.sh` will shod resources similar to below.
+After running `./Deploy.sh`, `./Display.sh` will show resources similar to below.
 
 ```
 ---- Prometheus namespace ----
@@ -150,7 +151,7 @@ service-monitor.monitoring.coreos.com   Prometheus monitoring for a service   v1
 alertmanager.monitoring.coreos.com      Managed Alertmanager cluster          v1alpha1
 ```
 
-## Sample use of Display.sh
+## Sample use of Deploy.sh
 
 ```
 Creating record in zone 'outwide.cloud'
