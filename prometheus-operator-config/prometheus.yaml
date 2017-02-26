@@ -15,7 +15,7 @@ spec:
   serviceAccountName: prometheus
   serviceMonitorSelector:
     matchExpressions:
-    - {key: app, operator: In, values: [node-exporter, kube-state-metrics, kube-dns]}
+    - {key: app, operator: In, values: [prometheus, node-exporter, kube-state-metrics, kube-dns]}
   alerting:
     alertmanagers:
     - namespace: prometheus

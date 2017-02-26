@@ -1,0 +1,18 @@
+apiVersion: "monitoring.coreos.com/v1alpha1"
+kind: "ServiceMonitor"
+metadata:
+  name: prometheus
+  namespace: prometheus
+  labels:
+    app: prometheus
+    env: live
+spec:
+  namespaceSelector:
+    matchNames:
+    - prometheus
+  selector:
+    matchLabels:
+      app: prometheus
+  endpoints:
+  - port: web
+    scheme: http
