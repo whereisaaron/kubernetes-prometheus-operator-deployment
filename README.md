@@ -4,7 +4,7 @@ This Kubernetes deployment uses [prometheus-operator](https://github.com/coreos/
 to deploy and configure [prometheus](https://prometheus.io/). It includes metrics exporters 
 for kubenetes nodes, [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics) 
 for metrics from the Kubernetes API, and [node-exporter](https://github.com/prometheus/node_exporter) 
-for metrics from the Linux OS on each node.
+for metrics from the Linux OS on each node. It also collects metrics from kube-dns and Prometheus.
 
 This deployment is somewhat opinionated, but can be easily adapted.
 - Expects you use a Kubernetes Ingress controller and basic authentication
