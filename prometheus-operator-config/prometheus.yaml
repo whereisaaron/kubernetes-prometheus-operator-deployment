@@ -2,7 +2,6 @@ apiVersion: "monitoring.coreos.com/v1alpha1"
 kind: "Prometheus"
 metadata:
   name: main
-  namespace: prometheus
   labels:
     prometheus: main
     app: prometheus
@@ -18,7 +17,7 @@ spec:
     - {key: app, operator: In, values: [prometheus, node-exporter, kube-state-metrics, kube-dns]}
   alerting:
     alertmanagers:
-    - namespace: prometheus
+    - namespace: ${DEPLOY_NAMESPACE}
       name: alertmanager-main
       port: web
   resources:

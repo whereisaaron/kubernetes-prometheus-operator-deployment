@@ -1,0 +1,14 @@
+# https://prometheus.io/docs/alerting/configuration/
+
+ALERT SomethingIsUp
+  IF up == 0
+  FOR 5m
+  LABELS { severity = "page" }
+  ANNOTATIONS {
+    summary = "Instance {{ $labels.instance }} down",
+    description = "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.",
+  }
+
+# Fake alert to force trigger
+#ALERT FakeAlert
+#  IF up == 1

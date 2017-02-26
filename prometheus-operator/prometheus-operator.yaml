@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: prometheus-operator
-  namespace: prometheus
   labels:
     operator: prometheus
     app: prometheus

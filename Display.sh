@@ -1,18 +1,29 @@
 #!/bin/bash
 
-echo "---- Prometheus namespace ----"
+DEPLOY_NAMESPACE=${DEPLOY_NAMESPACE:=prometheus}
+
+kc-ns() {
+  kubectl --namespace "$DEPLOY_NAMESPACE" "$@"
+}
+
+echo "---- Deploy namespace '$DEPLOY_NAMESPACE' ----"
 echo ""
-kubectl get ing,svc,endpoints,deployment,daemonset,statefulset,pod,sa,cm,secrets,pvc --namespace=prometheus
+kc-ns get ing,svc,endpoints,deployment,daemonset,statefulset,pod,sa,cm,secrets,pvc
 
 echo""
 echo "---- Prometheus Operator configuration ----"
 echo ""
-kubectl get prometheus,servicemonitor,alertmanager --namespace=prometheus
+kc-ns get prometheus,servicemonitor,alertmanagers
+
+echo""
+echo "---- Extra Services to discover metrics endpoints ----"
+echo ""
+kubectl get --all-namespaces service -l metrics
 
 echo ""
 echo "---- Cluster permissions ----"
 echo ""
-kubectl get clusterrole,clusterrolebinding --selector=app=prometheus
+kc-ns get clusterrole,clusterrolebinding --selector=app=prometheus
 
 echo ""
 echo "---- Third party resources ----"

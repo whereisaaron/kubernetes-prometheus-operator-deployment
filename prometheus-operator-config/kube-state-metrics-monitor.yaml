@@ -2,7 +2,6 @@ apiVersion: "monitoring.coreos.com/v1alpha1"
 kind: "ServiceMonitor"
 metadata:
   name: kube-state-metrics
-  namespace: prometheus
   labels:
     app: kube-state-metrics
     env: live
