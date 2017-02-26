@@ -52,6 +52,13 @@ for file in prometheus-alerts/*.yaml prometheus-ingress/*.yaml; do
   envsubst < $file | kubectl apply -f -
 done
 
+# Wait for third party resources created by prometheus-operator to be ready
+echo -n "Waiting for Operator to register third party objects..."
+until kubectl --namespace=prometheus get servicemonitor > /dev/null 2>&1; do sleep 1; echo -n "."; done
+until kubectl --namespace=prometheus get prometheus > /dev/null 2>&1; do sleep 1; echo -n "."; done
+until kubectl --namespace=prometheus get alertmanager > /dev/null 2>&1; do sleep 1; echo -n "."; done
+echo "done!"
+
 # Prometheus Operator and monitor configuraton, third party resources cannot be apply'd
 for file in prometheus-operator-config/*.yaml; do
   envsubst < $file | kubectl replace -f -

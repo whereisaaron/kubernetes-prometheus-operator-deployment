@@ -35,14 +35,21 @@ spec:
         env: live
       name: node-exporter
     spec:
+      hostNetwork: true
+      hostPID: true
       containers:
       - image: quay.io/prometheus/node-exporter:v0.13.0
         args:
         - "-collector.procfs=/host/proc"
         - "-collector.sysfs=/host/sys"
+        - "-collector.filesystem.ignored-mount-points"
+        - '^/(sys|proc|dev|host|etc|rootfs/.+)($|/)'
+        - "-collectors.enabled"
+        - "conntrack,diskstats,entropy,filefd,filesystem,loadavg,mdadm,meminfo,netdev,netstat,sockstat,stat,time,uname,vmstat"
         name: node-exporter
         ports:
         - containerPort: 9100
+          hostPort: 9100
           name: metrics
         resources:
           requests:
@@ -58,6 +65,9 @@ spec:
         - name: sys
           readOnly: true
           mountPath: /host/sys
+        - name: rootfs
+          readOnly: true
+          mountPath: /rootfs
       volumes:
       - name: proc
         hostPath:
@@ -65,3 +75,6 @@ spec:
       - name: sys
         hostPath:
           path: /sys
+      - name: rootfs
+        hostPath:
+          path: /

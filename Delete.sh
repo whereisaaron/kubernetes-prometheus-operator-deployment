@@ -26,8 +26,8 @@ fi
 for file in prometheus-operator-config/*.yaml; do
   envsubst < $file | kubectl delete --ignore-not-found -f -
 done
-echo "Giving Prometheus Operator 20s to clean up..."
-sleep 20
+echo "Giving Prometheus Operator 10s to clean up..."
+sleep 10
 
 # Delete Prometheus Operator, Ingress and Service Account for Prometheus
 for file in prometheus-alerts/*.yaml prometheus-ingress/*.yaml; do

@@ -1,0 +1,18 @@
+apiVersion: "monitoring.coreos.com/v1alpha1"
+kind: "ServiceMonitor"
+metadata:
+  name: kube-dns
+  namespace: prometheus
+  labels:
+    app: kube-dns
+    env: live
+spec:
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    matchLabels:
+      metrics: kube-dns
+  endpoints:
+  - port: metrics
+    scheme: http
