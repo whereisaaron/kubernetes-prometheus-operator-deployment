@@ -3,8 +3,9 @@ kind: Service
 metadata:
   name: kube-state-metrics
   annotations:
-    prometheus.io/scrape: 'true'
+    alpha.monitoring.coreos.com/non-namespaced: "true"
   labels:
+    metrics: kube-state-metrics
     app: kube-state-metrics
     env: live
 spec:

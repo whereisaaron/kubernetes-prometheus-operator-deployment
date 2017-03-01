@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: node-exporter
   labels:
+    metrics: node-exporter
     app: node-exporter
     env: live
   annotations:

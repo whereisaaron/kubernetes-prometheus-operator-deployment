@@ -14,7 +14,7 @@ spec:
   serviceAccountName: prometheus
   serviceMonitorSelector:
     matchExpressions:
-    - {key: app, operator: In, values: [prometheus, node-exporter, kube-state-metrics, kube-dns]}
+    - {key: k8s-app, operator: Exists}
   alerting:
     alertmanagers:
     - namespace: ${DEPLOY_NAMESPACE}
@@ -22,7 +22,7 @@ spec:
       port: web
   resources:
     requests:
-      memory: 400Mi
+      memory: 2Gi
   storage:
     resources:
       requests:

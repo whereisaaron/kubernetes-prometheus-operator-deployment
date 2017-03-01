@@ -4,15 +4,20 @@ metadata:
   name: kube-dns-metrics
   namespace: kube-system
   labels:
+    k8s-app: kube-dns
     metrics: kube-dns
     env: live
 spec:
   type: ClusterIP
   clusterIP: None
   ports:
-  - name: metrics
+  - name: http-skydns-metrics
     port: 10055
     protocol: TCP
-    targetPort: metrics
+    targetPort: 10055
+  - name: http-dnsmasq-metrics
+    port: 10054
+    protocol: TCP
+    targetPort: 10054
   selector:
     k8s-app: kube-dns

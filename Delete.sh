@@ -47,7 +47,7 @@ done
 # Delete Prometheus Exporters
 kc-ns delete --ignore-not-found -f node-exporter
 kc-ns delete --ignore-not-found -f kube-state-metrics
-kubectl delete --ignore-not-found -f kube-dns-metrics
+kubectl delete --ignore-not-found -f kube-system-metrics
 
 # Delete services created by prometheus-operator
 kc-ns delete --ignore-not-found service prometheus-operated alertmanager-operated

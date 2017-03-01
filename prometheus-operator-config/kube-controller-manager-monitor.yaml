@@ -1,22 +1,19 @@
 apiVersion: "monitoring.coreos.com/v1alpha1"
 kind: "ServiceMonitor"
 metadata:
-  name: kube-dns
+  name: kube-controller-manager
   labels:
-    k8s-app: kube-dns
+    k8s-app: kube-controller-manager
     env: live
 spec:
-  jobLabel: kube-dns
+  jobLabel: kube-controller-manager
   namespaceSelector:
     matchNames:
     - kube-system
   selector:
     matchLabels:
-      metrics: kube-dns
+      metrics: kube-controller-manager
   endpoints:
-  - port: http-skydns-metrics
-    interval: 15s
-    scheme: http
-  - port: http-dnsmasq-metrics
+  - port: http-metrics
     interval: 15s
     scheme: http

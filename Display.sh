@@ -18,7 +18,8 @@ kc-ns get prometheus,servicemonitor,alertmanagers
 echo""
 echo "---- Extra Services to discover metrics endpoints ----"
 echo ""
-kubectl get --all-namespaces service -l metrics
+kubectl get --namespace=kube-system service -l metrics
+kubectl get --namespace=kube-system service kubelet-metrics
 
 echo ""
 echo "---- Cluster permissions ----"

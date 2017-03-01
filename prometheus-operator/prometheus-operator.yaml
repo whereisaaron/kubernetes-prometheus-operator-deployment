@@ -18,11 +18,14 @@ spec:
       serviceAccountName: prometheus-operator
       containers:
       - name: prometheus-operator
-        image: quay.io/coreos/prometheus-operator:rbac
+        image: quay.io/coreos/prometheus-operator:v0.6.0
+        args:
+        - "--kubelet-object=kube-system/kubelet-metrics"
+        - "--config-reloader-image=quay.io/coreos/configmap-reload:latest"
         resources:
           requests:
             cpu: 100m
             memory: 50Mi
           limits:
             cpu: 200m
-            memory: 100Mi
+            memory: 300Mi

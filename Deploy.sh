@@ -49,7 +49,7 @@ fi
 # Prometheus Exporters
 kc-ns apply -f node-exporter
 kc-ns apply -f kube-state-metrics
-kubectl apply -f kube-dns-metrics
+kubectl apply -f kube-system-metrics
 
 # Prometheus Operator and Service Account for Prometheus instances
 for file in prometheus-service-account/*.yaml prometheus-operator/*.yaml; do

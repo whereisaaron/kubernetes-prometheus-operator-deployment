@@ -3,9 +3,10 @@ kind: "ServiceMonitor"
 metadata:
   name: prometheus
   labels:
-    app: prometheus
+    k8s-app: prometheus
     env: live
 spec:
+  jobLabel: prometheus
   namespaceSelector:
     matchNames:
     - prometheus
