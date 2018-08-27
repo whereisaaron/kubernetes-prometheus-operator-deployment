@@ -227,17 +227,17 @@ ALERT K8SKubeletNodeExporterDown
 
 # XXXX Renamed job "kubelets" to "kubelet-metrics"
 #
-ALERT K8SKubeletDown
-  IF absent(up{job="kubelet-metrics"}) or count by (cluster) (up{job="kubelet-metrics"} == 0) / count by (cluster) (up{job="kubelet-metrics"}) > 0.1
-  FOR 1h
-  LABELS {
-    service = "k8s",
-    severity = "critical"
-  }
-  ANNOTATIONS {
-    summary = "Many Kubelets cannot be scraped",
-    description = "Prometheus failed to scrape more than 10% of kubelets, or all Kubelets have disappeared from service discovery.",
-  }
+#ALERT K8SKubeletDown
+#  IF absent(up{job="kubelet-metrics"}) or count by (cluster) (up{job="kubelet-metrics"} == 0) / count by (cluster) (up{job="kubelet-metrics"}) > 0.1
+#  FOR 1h
+#  LABELS {
+#    service = "k8s",
+#    severity = "critical"
+#  }
+#  ANNOTATIONS {
+#    summary = "Many Kubelets cannot be scraped",
+#    description = "Prometheus failed to scrape more than 10% of kubelets, or all Kubelets have disappeared from service discovery.",
+#  }
 
 ALERT K8SApiserverDown
   IF up{job="kubernetes"} == 0
@@ -252,45 +252,46 @@ ALERT K8SApiserverDown
   }
 
 # Disable for non HA kubernetes setups.
-ALERT K8SApiserverDown
-  IF absent({job="kubernetes"}) or (count by(cluster) (up{job="kubernetes"} == 1) < count by(cluster) (up{job="kubernetes"}))
-  FOR 5m
-  LABELS {
-    service = "k8s",
-    severity = "critical"
-  }
-  ANNOTATIONS {
-    summary = "API server unreachable",
-    description = "Prometheus failed to scrape multiple API servers, or all API servers have disappeared from service discovery.",
-  }
+# XXXX
+#ALERT K8SApiserverDown
+#  IF absent({job="kubernetes"}) or (count by(cluster) (up{job="kubernetes"} == 1) < count by(cluster) (up{job="kubernetes"}))
+#  FOR 5m
+#  LABELS {
+#    service = "k8s",
+#    severity = "critical"
+#  }
+#  ANNOTATIONS {
+#    summary = "API server unreachable",
+#    description = "Prometheus failed to scrape multiple API servers, or all API servers have disappeared from service discovery.",
+#  }
 
 # XXXX Renamed job "kube-scheduler" to "kublet-scheduler-metrics"
 #
-ALERT K8SSchedulerDown
-  IF absent(up{job="kube-scheduler-metrics"}) or (count by(cluster) (up{job="kube-scheduler-metrics"} == 1) == 0)
-  FOR 5m
-  LABELS {
-    service = "k8s",
-    severity = "critical",
-  }
-  ANNOTATIONS {
-    summary = "Scheduler is down",
-    description = "There is no running K8S scheduler. New pods are not being assigned to nodes.",
-  }
+#ALERT K8SSchedulerDown
+#  IF absent(up{job="kube-scheduler-metrics"}) or (count by(cluster) (up{job="kube-scheduler-metrics"} == 1) == 0)
+#  FOR 5m
+#  LABELS {
+#    service = "k8s",
+#    severity = "critical",
+#  }
+#  ANNOTATIONS {
+#    summary = "Scheduler is down",
+#    description = "There is no running K8S scheduler. New pods are not being assigned to nodes.",
+#  }
 
 # XXXX Renamed job "kube-controller-manager-metrics" to "kube-controller-manager-metrics"
 #
-ALERT K8SControllerManagerDown
-  IF absent(up{job="kube-controller-manager-metrics"}) or (count by(cluster) (up{job="kube-controller-manager-metrics"} == 1) == 0)
-  FOR 5m
-  LABELS {
-    service = "k8s",
-    severity = "critical",
-  }
-  ANNOTATIONS {
-    summary = "Controller manager is down",
-    description = "There is no running K8S controller manager. Deployments and replication controllers are not making progress.",
-  }
+#ALERT K8SControllerManagerDown
+#  IF absent(up{job="kube-controller-manager-metrics"}) or (count by(cluster) (up{job="kube-controller-manager-metrics"} == 1) == 0)
+#  FOR 5m
+#  LABELS {
+#    service = "k8s",
+#    severity = "critical",
+#  }
+#  ANNOTATIONS {
+#    summary = "Controller manager is down",
+#    description = "There is no running K8S controller manager. Deployments and replication controllers are not making progress.",
+#  }
 
 ALERT K8SConntrackTableFull
   IF 100*node_nf_conntrack_entries / node_nf_conntrack_entries_limit > 50

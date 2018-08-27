@@ -15,8 +15,8 @@ spec:
       metrics: kube-dns
   endpoints:
   - port: http-skydns-metrics
-    interval: 15s
+    interval: 60s
     scheme: http
   - port: http-dnsmasq-metrics
-    interval: 15s
+    interval: 60s
     scheme: http

@@ -15,5 +15,5 @@ spec:
       metrics: kube-scheduler
   endpoints:
   - port: http-metrics
-    interval: 15s
+    interval: 30s
     scheme: http

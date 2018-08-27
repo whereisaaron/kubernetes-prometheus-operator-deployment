@@ -22,7 +22,9 @@ spec:
       port: web
   resources:
     requests:
-      memory: 2Gi
+      memory: 4Gi
+    limits:
+      memory: 6Gi
   storage:
     resources:
       requests:

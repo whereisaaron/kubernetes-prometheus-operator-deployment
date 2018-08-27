@@ -12,3 +12,4 @@ spec:
       app: node-exporter
   endpoints:
   - port: metrics
+    interval: 30s
